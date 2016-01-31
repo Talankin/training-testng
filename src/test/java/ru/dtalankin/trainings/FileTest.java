@@ -20,7 +20,7 @@ public class FileTest {
     private Path tmpDir = null;
     private File subDir = null;
 
-    @BeforeClass
+    @BeforeClass(groups = {"positive","negative"})
     public void createTmpDirTest(){
         try {
             System.out.println("Set up fixture");
@@ -39,12 +39,13 @@ public class FileTest {
         }
     }
 
-    @AfterClass
+    @AfterClass(groups = {"positive","negative"})
     public void deleteTmpDirTest(){
         System.out.println("Tear down fixture");
         FileUtils.deleteQuietly(tmpDir.toFile());
     }
 
+    @Test(groups = "positive")
     public void filePositiveTest1() {
         File file = new File(tmpDir.toFile(), "file1.txt");
         try {
@@ -54,6 +55,7 @@ public class FileTest {
         }
     }
 
+    @Test(groups = "positive")
     public void filePositiveTest2() {
         File file = new File(subDir, "file2.txt");
         try {
@@ -63,6 +65,7 @@ public class FileTest {
         }
     }
 
+    @Test(groups = "negative")
     public void fileNegativeTest3() {
         File file = new File(tmpDir.toFile(), "file3.txt");
         try {
@@ -72,6 +75,7 @@ public class FileTest {
         }
     }
 
+    @Test(groups = "negative")
     public void fileNegativeTest4() {
         File file = new File(subDir, "file4.txt");
         try {
