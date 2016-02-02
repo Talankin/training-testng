@@ -26,14 +26,8 @@ public class FileTest {
             System.out.println("Set up fixture");
             tmpDir = Files.createTempDirectory("tmpDir");
 
-            File fileForNegativeTest1 = new File(tmpDir.toFile(), "file3.txt");
-            fileForNegativeTest1.createNewFile();
-
             subDir = new File(tmpDir.toFile(), "subdir");
             subDir.mkdir();
-
-            File fileForNegativeTest2 = new File(subDir, "file4.txt");
-            fileForNegativeTest2.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,7 +43,7 @@ public class FileTest {
     public void filePositiveTest1() {
         File file = new File(tmpDir.toFile(), "file1.txt");
         try {
-            System.out.println("Positive test. file1 is created : " + file.createNewFile());
+            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,9 +61,12 @@ public class FileTest {
 
     @Test(groups = "negative")
     public void fileNegativeTest3() {
+        File fileForNegativeTest = new File(tmpDir.toFile(), "file3.txt");
         File file = new File(tmpDir.toFile(), "file3.txt");
+
         try {
-            System.out.println("Negative test. file3 is created : " + file.createNewFile());
+            fileForNegativeTest.createNewFile();
+            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,9 +74,12 @@ public class FileTest {
 
     @Test(groups = "negative")
     public void fileNegativeTest4() {
+        File fileForNegativeTest = new File(subDir, "file4.txt");
         File file = new File(subDir, "file4.txt");
+
         try {
-            System.out.println("Negative test. file4 is created : " + file.createNewFile());
+            fileForNegativeTest.createNewFile();
+            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
