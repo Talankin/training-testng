@@ -6,6 +6,7 @@ package ru.dtalankin.trainings;
 
 
 import org.apache.commons.io.FileUtils;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -43,7 +44,7 @@ public class FileTest {
     public void filePositiveTest1() {
         File file = new File(tmpDir.toFile(), "file1.txt");
         try {
-            file.createNewFile();
+            Assert.assertTrue(file.createNewFile(), "File1 is not created");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,7 +54,7 @@ public class FileTest {
     public void filePositiveTest2() {
         File file = new File(subDir, "file2.txt");
         try {
-            System.out.println("Positive test. file2 is created : " + file.createNewFile());
+            Assert.assertTrue(file.createNewFile(), "File2 is not created");
         } catch (IOException e) {
             e.printStackTrace();
         }
