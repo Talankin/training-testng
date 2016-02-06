@@ -7,6 +7,7 @@ package ru.dtalankin.trainings;
 
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,26 +22,24 @@ public class FileTest {
     private Path tmpDir = null;
     private File subDir = null;
 
-    @BeforeClass(groups = {"positive","negative"})
+    @BeforeClass(groups = {"positive","negative"}, alwaysRun = true)
     public void createTmpDirTest(){
         try {
-            System.out.println("Set up fixture");
             tmpDir = Files.createTempDirectory("tmpDir");
-
             subDir = new File(tmpDir.toFile(), "subdir");
             subDir.mkdir();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @AfterClass(groups = {"positive","negative"})
+    @AfterClass(groups = {"positive","negative"}, alwaysRun = true)
     public void deleteTmpDirTest(){
-        System.out.println("Tear down fixture");
         FileUtils.deleteQuietly(tmpDir.toFile());
     }
 
-    @Test(groups = "positive")
+    @Test(groups = "positive", alwaysRun = true)
     public void filePositiveTest1() {
         File file = new File(tmpDir.toFile(), "file1.txt");
         try {
@@ -50,7 +49,7 @@ public class FileTest {
         }
     }
 
-    @Test(groups = "positive")
+    @Test(groups = "positive", alwaysRun = true)
     public void filePositiveTest2() {
         File file = new File(subDir, "file2.txt");
         try {
@@ -60,29 +59,21 @@ public class FileTest {
         }
     }
 
-    @Test(groups = "negative")
+    @Test(groups = "negative", alwaysRun = true)
     public void fileNegativeTest3() {
-        File fileForNegativeTest = new File(tmpDir.toFile(), "file3.txt");
         File file = new File(tmpDir.toFile(), "file3.txt");
 
         try {
-            fileForNegativeTest.createNewFile();
             file.createNewFile();
+            AssertJUnit.assertTrue("File3 is not a derictory", file.isDirectory());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Test(groups = "negative")
+    @Test(groups = "negative", alwaysRun = true)
     public void fileNegativeTest4() {
-        File fileForNegativeTest = new File(subDir, "file4.txt");
-        File file = new File(subDir, "file4.txt");
-
-        try {
-            fileForNegativeTest.createNewFile();
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = new File(subDir, "file4");
+        AssertJUnit.assertTrue("File4 does not exist", file.exists());
     }
 }

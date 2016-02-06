@@ -8,7 +8,8 @@
                 <include name="positive"></include>
             </run>
             <dependencies>
-                <group name="negative" depends-on="positive"></group>
+                <group name="positive" depends-on="negative"></group>
+                <!--<group name="negative" depends-on="positive"></group>-->
             </dependencies>
         </groups>
         <packages>
