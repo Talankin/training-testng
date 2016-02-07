@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Test
 public class FileTest {
@@ -54,10 +57,26 @@ public class FileTest {
         AssertJUnit.assertTrue("File3 is not a derictory", file.isDirectory());
     }
 
-    @Test(groups = "negative", alwaysRun = true)
-    public void fileNegativeTest4() {
-        File file = new File(subDir, "file4");
+    @Test(groups = "positive", alwaysRun = true, dataProvider = "fileNameGenerator")
+    public void filePositiveTest4(String fileName) throws IOException {
+        File file = new File(subDir, fileName);
+        file.createNewFile();
         AssertJUnit.assertTrue("File4 does not exist", file.exists());
+    }
+
+    @DataProvider
+    public Iterator<Object[]> fileNameGenerator() {
+        List<Object[]> filesList = new ArrayList<Object[]>();
+        for(int i=0; i<5; i++) {
+            filesList.add(new Object[]{
+                    generateRandomFileName()
+            });
+        }
+        return filesList.iterator();
+    }
+
+    private Object generateRandomFileName() {
+        return "file" + (int)(Math.random()*100000) + ".txt";
     }
 
 }
