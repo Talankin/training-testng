@@ -41,7 +41,7 @@
         <version>2.17</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>src/test/resources/config-packages.xml</suiteXmlFile>
+            <suiteXmlFile>src/test/resources/suite-with-parameters.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>

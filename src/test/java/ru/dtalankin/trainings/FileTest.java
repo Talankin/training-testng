@@ -4,13 +4,10 @@
 
 package ru.dtalankin.trainings;
 
-
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,15 +20,10 @@ public class FileTest {
     private File subDir = null;
 
     @BeforeClass(groups = {"positive","negative"}, alwaysRun = true)
-    public void createTmpDirTest(){
-        try {
-            tmpDir = Files.createTempDirectory("tmpDir");
-            subDir = new File(tmpDir.toFile(), "subdir");
-            subDir.mkdir();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void createTmpDirTest() throws IOException {
+        tmpDir = Files.createTempDirectory("tmpDir");
+        subDir = new File(tmpDir.toFile(), "subdir");
+        subDir.mkdir();
     }
 
     @AfterClass(groups = {"positive","negative"}, alwaysRun = true)
@@ -40,35 +32,26 @@ public class FileTest {
     }
 
     @Test(groups = "positive", alwaysRun = true)
-    public void filePositiveTest1() {
-        File file = new File(tmpDir.toFile(), "file1.txt");
-        try {
-            Assert.assertTrue(file.createNewFile(), "File1 is not created");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Parameters({"subPath","fileName"})
+    public void filePositiveTest1(String subPath, String fileName) throws IOException {
+        File fullPath = new File(tmpDir.toFile(), subPath);
+        fullPath.mkdir();
+        File file = new File(fullPath, fileName);
+        Assert.assertTrue(file.createNewFile(), "File1 is not created");
     }
 
-    @Test(groups = "positive", alwaysRun = true)
-    public void filePositiveTest2() {
-        File file = new File(subDir, "file2.txt");
-        try {
-            Assert.assertTrue(file.createNewFile(), "File2 is not created");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Test(groups = "positive", alwaysRun = true,
+            dataProviderClass = DataProviders.class, dataProvider = "loadFileNameFromFile")
+    public void filePositiveTest2(String fileName) throws IOException {
+        File file = new File(subDir, fileName);
+        Assert.assertTrue(file.createNewFile(), "File2 is not created");
     }
 
     @Test(groups = "negative", alwaysRun = true)
-    public void fileNegativeTest3() {
+    public void fileNegativeTest3() throws IOException {
         File file = new File(tmpDir.toFile(), "file3.txt");
-
-        try {
-            file.createNewFile();
-            AssertJUnit.assertTrue("File3 is not a derictory", file.isDirectory());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        file.createNewFile();
+        AssertJUnit.assertTrue("File3 is not a derictory", file.isDirectory());
     }
 
     @Test(groups = "negative", alwaysRun = true)
@@ -76,4 +59,5 @@ public class FileTest {
         File file = new File(subDir, "file4");
         AssertJUnit.assertTrue("File4 does not exist", file.exists());
     }
+
 }

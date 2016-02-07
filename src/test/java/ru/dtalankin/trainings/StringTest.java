@@ -4,9 +4,6 @@
 
 package ru.dtalankin.trainings;
 
-
-import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 
