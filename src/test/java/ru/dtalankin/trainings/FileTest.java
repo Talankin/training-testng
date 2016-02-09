@@ -21,6 +21,7 @@ import java.util.List;
 public class FileTest {
     private Path tmpDir = null;
     private File subDir = null;
+    private String notExistingDir = "qwerty";
 
     @BeforeClass(groups = {"positive","negative"}, alwaysRun = true)
     public void createTmpDirTest() throws IOException {
@@ -50,18 +51,25 @@ public class FileTest {
         Assert.assertTrue(file.createNewFile(), "File2 is not created");
     }
 
-    @Test(groups = "negative", alwaysRun = true)
-    public void fileNegativeTest3() throws IOException {
-        File file = new File(tmpDir.toFile(), "file3.txt");
-        file.createNewFile();
-        AssertJUnit.assertTrue("File3 is not a derictory", file.isDirectory());
-    }
-
     @Test(groups = "positive", alwaysRun = true, dataProvider = "fileNameGenerator")
     public void filePositiveTest4(String fileName) throws IOException {
         File file = new File(subDir, fileName);
         file.createNewFile();
         AssertJUnit.assertTrue("File4 does not exist", file.exists());
+    }
+
+    @Test(groups = "negative", alwaysRun = true)
+    public void fileNegativeTest3() throws IOException {
+        File file = new File(tmpDir.toFile(), "file3.txt");
+        file.createNewFile();
+        AssertJUnit.assertFalse("File3 created", file.createNewFile());
+    }
+
+    @Test(groups = "negative", alwaysRun = true)
+    public void fileNegativeTest4() throws IOException {
+        File notExistingPath = new File(subDir, notExistingDir);
+        File file = new File(notExistingPath, "file4");
+        AssertJUnit.assertTrue("File4 did not create", file.createNewFile());
     }
 
     @DataProvider
