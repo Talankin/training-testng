@@ -41,35 +41,38 @@ public class FileTest {
         File fullPath = new File(tmpDir.toFile(), subPath);
         fullPath.mkdir();
         File file = new File(fullPath, fileName);
-        Assert.assertTrue(file.createNewFile(), "File1 is not created");
+        file.createNewFile();
+        Assert.assertTrue(file.exists(), "File1 is not created");
     }
 
     @Test(groups = "positive", alwaysRun = true,
             dataProviderClass = DataProviders.class, dataProvider = "loadFileNameFromFile")
     public void filePositiveTest2(String fileName) throws IOException {
         File file = new File(subDir, fileName);
-        Assert.assertTrue(file.createNewFile(), "File2 is not created");
+        file.createNewFile();
+        Assert.assertTrue(file.exists(), "File2 is not created");
     }
 
     @Test(groups = "positive", alwaysRun = true, dataProvider = "fileNameGenerator")
-    public void filePositiveTest4(String fileName) throws IOException {
+    public void filePositiveTest3(String fileName) throws IOException {
         File file = new File(subDir, fileName);
         file.createNewFile();
         AssertJUnit.assertTrue("File4 does not exist", file.exists());
     }
 
     @Test(groups = "negative", alwaysRun = true)
-    public void fileNegativeTest3() throws IOException {
+    public void fileNegativeTest4() throws IOException {
         File file = new File(tmpDir.toFile(), "file3.txt");
         file.createNewFile();
         AssertJUnit.assertFalse("File3 created", file.createNewFile());
     }
 
     @Test(groups = "negative", alwaysRun = true)
-    public void fileNegativeTest4() throws IOException {
+    public void fileNegativeTest5() throws IOException {
         File notExistingPath = new File(subDir, notExistingDir);
-        File file = new File(notExistingPath, "file4");
-        AssertJUnit.assertTrue("File4 did not create", file.createNewFile());
+        File file = new File(notExistingPath, "file4.txt");
+        AssertionForExceptions verify = new AssertionForExceptions();
+        verify.assertExpectedException(file);
     }
 
     @DataProvider
